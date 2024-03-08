@@ -13,3 +13,7 @@ config_version=5
 config/name="GodotWirebugSelfStudy"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[physics]
+
+3d/physics_engine="JoltPhysics3D"
