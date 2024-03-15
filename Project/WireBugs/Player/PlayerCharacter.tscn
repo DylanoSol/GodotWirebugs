@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxcv3bkpdfc0o"]
+
+[ext_resource type="PackedScene" uid="uid://bdq6ajic6fjrf" path="res://WireBugs/Models/mixamo_base.glb" id="1_hlh05"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3nvhp"]
+
+[node name="PlayerCharacter" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_3nvhp")
+
+[node name="visuals" type="Node3D" parent="."]
+
+[node name="mixamo_base" parent="visuals" instance=ExtResource("1_hlh05")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="camerafocus" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00172424, 1.41546, 0.00687456)
+
+[node name="Camera3D" type="Camera3D" parent="camerafocus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.346866, 2.28517)

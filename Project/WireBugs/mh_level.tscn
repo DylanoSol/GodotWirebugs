@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpvnirvk3gule"]
+
+[ext_resource type="PackedScene" uid="uid://cxcv3bkpdfc0o" path="res://WireBugs/Player/PlayerCharacter.tscn" id="1_fim3r"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fcu5s"]
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_and1m"]
+size = Vector3(1000, 1, 1000)
+
+[node name="MHLevel" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00409162, -18.6399, -0.0110747)
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1.0018, 0, 0, 0, 1.0018, 0, 0, 0, 1.0018, 0, 0, 0)
+mesh = SubResource("BoxMesh_fcu5s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_and1m")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.726587, 0.687075, 0, -0.687075, 0.726587, 0, 3462.85, 3988.63)
+
+[node name="PlayerCharacter" parent="." instance=ExtResource("1_fim3r")]
