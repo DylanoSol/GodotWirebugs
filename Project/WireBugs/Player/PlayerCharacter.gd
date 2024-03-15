@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @onready var camerafocus = $camerafocus
+@onready var visuals = $visuals
 
 
 const SPEED = 5.0
@@ -21,6 +22,7 @@ func _input(event):
 		rotate_y(-deg_to_rad(event.relative.x) * camera_speed_x)
 		# y axis mouse movement. Do this on the camera focus
 		camerafocus.rotate_x(-deg_to_rad(event.relative.y) * camera_speed_y)
+
 		
 	
 func _physics_process(delta):

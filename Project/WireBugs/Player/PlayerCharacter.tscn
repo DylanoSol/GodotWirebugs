@@ -1,9 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://cxcv3bkpdfc0o"]
 
-[ext_resource type="PackedScene" uid="uid://bdq6ajic6fjrf" path="res://WireBugs/Models/mixamo_base.glb" id="1_hlh05"]
 [ext_resource type="Script" path="res://WireBugs/Player/PlayerCharacter.gd" id="1_t381y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3nvhp"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4176y"]
 
 [node name="PlayerCharacter" type="CharacterBody3D"]
 script = ExtResource("1_t381y")
@@ -13,12 +14,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_3nvhp")
 
 [node name="visuals" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="mixamo_base" parent="visuals" instance=ExtResource("1_hlh05")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="visuals"]
+mesh = SubResource("CapsuleMesh_4176y")
 
 [node name="camerafocus" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00172424, 1.41546, 0.00687456)
 
 [node name="Camera3D" type="Camera3D" parent="camerafocus"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.346866, 2.28517)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.643514, 3.305)
