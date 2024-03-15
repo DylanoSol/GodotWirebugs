@@ -26,6 +26,8 @@ shape = SubResource("BoxShape3D_and1m")
 transform = Transform3D(1, 0, 0, 0, 0.726587, 0.687075, 0, -0.687075, 0.726587, 0, 3462.85, 3988.63)
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("1_fim3r")]
+camera_speed_x = 0.2
+camera_speed_y = 0.2
 
 [node name="ReferenceObjects" type="Node3D" parent="."]
 
