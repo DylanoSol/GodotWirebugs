@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bk3ar8ltshs5r"]
+[gd_scene load_steps=4 format=3 uid="uid://bk3ar8ltshs5r"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hnnqg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_enrcx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1cfau"]
 
 [node name="TestsRigidBody" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_hnnqg")
+freeze = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_enrcx")
