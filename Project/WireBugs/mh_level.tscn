@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bpvnirvk3gule"]
+[gd_scene load_steps=5 format=3 uid="uid://bpvnirvk3gule"]
 
 [ext_resource type="PackedScene" uid="uid://cxcv3bkpdfc0o" path="res://WireBugs/Player/PlayerCharacter.tscn" id="1_fim3r"]
+[ext_resource type="PackedScene" uid="uid://bk3ar8ltshs5r" path="res://TestCodeToLearn/TestRigidBody.tscn" id="2_qcg8e"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_fcu5s"]
 size = Vector3(1000, 1, 1000)
@@ -11,7 +12,7 @@ size = Vector3(1000, 1, 1000)
 [node name="MHLevel" type="Node3D"]
 
 [node name="Floor" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00409162, -18.6399, -0.0110747)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00409162, -0.538794, -0.0110747)
 metadata/_edit_group_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
@@ -25,3 +26,17 @@ shape = SubResource("BoxShape3D_and1m")
 transform = Transform3D(1, 0, 0, 0, 0.726587, 0.687075, 0, -0.687075, 0.726587, 0, 3462.85, 3988.63)
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("1_fim3r")]
+
+[node name="ReferenceObjects" type="Node3D" parent="."]
+
+[node name="TestsRigidBody" parent="ReferenceObjects" instance=ExtResource("2_qcg8e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.744165, -2.80882)
+
+[node name="TestsRigidBody2" parent="ReferenceObjects" instance=ExtResource("2_qcg8e")]
+transform = Transform3D(0.157675, 0, -0.987491, 0, 1, 0, 0.987491, 0, 0.157675, -2.50414, 0.744165, 0.307915)
+
+[node name="TestsRigidBody4" parent="ReferenceObjects" instance=ExtResource("2_qcg8e")]
+transform = Transform3D(0.157675, 0, -0.987491, 0, 1, 0, 0.987491, 0, 0.157675, -2.50414, 0.744165, 0.307915)
+
+[node name="TestsRigidBody3" parent="ReferenceObjects" instance=ExtResource("2_qcg8e")]
+transform = Transform3D(0.791554, 0, -0.611099, 0, 1, 0, 0.611099, 0, 0.791554, 1.8023, 0.744165, -1.34215)
