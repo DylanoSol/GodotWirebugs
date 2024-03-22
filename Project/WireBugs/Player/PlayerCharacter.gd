@@ -1,8 +1,10 @@
 extends CharacterBody3D
-
 @onready var camerafocus = $camerafocus
 @onready var visuals = $visuals
 
+@export var playernode : CharacterBody3D
+
+@export var IsAiming = false; 
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -23,7 +25,11 @@ func _input(event):
 		# y axis mouse movement. Do this on the camera focus
 		camerafocus.rotate_x(-deg_to_rad(event.relative.y) * camera_speed_y)
 
-		
+func _process(delta): 
+	if Input.is_action_pressed("AimMode"):
+		IsAiming = true; 
+	else:
+		IsAiming = false; 
 	
 func _physics_process(delta):
 	# Add the gravity.

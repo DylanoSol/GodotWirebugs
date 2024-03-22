@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cytioeqa31q44"]
+[gd_scene load_steps=3 format=3 uid="uid://cytioeqa31q44"]
 
+[ext_resource type="Script" path="res://WireBugs/UI/HudFunctionality.gd" id="1_clp40"]
 [ext_resource type="Texture2D" uid="uid://bu25j4srr0nws" path="res://WireBugs/UI/Crosshair.png" id="1_ogdep"]
 
 [node name="Hud" type="Control"]
@@ -12,8 +13,10 @@ grow_vertical = 2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
+script = ExtResource("1_clp40")
 
-[node name="Crosshair" type="Sprite2D" parent="."]
+[node name="Crosshair" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(576, 324)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_ogdep")
