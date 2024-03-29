@@ -31,6 +31,9 @@ func _input(event):
 		camerafocus.rotate_x(-deg_to_rad(event.relative.y) * camera_speed_y)
 
 func _process(delta): 
+	pass
+	
+func _wirebug_launch():
 	if Input.is_action_pressed("AimMode"):
 		IsAiming = true; 
 	else:
@@ -43,8 +46,15 @@ func _process(delta):
 		else: 
 			print("Shoot target at other location")
 			worldTarget = raycast.get_collision_point()
+			
 		_spawn_debug_object_at_target(worldTarget)
 		
+		# Apply some velocity
+		launchVector = worldTarget - raycast.get_global_position()
+		velocity += launchVector 
+		
+		print(launchVector)
+	
 func _spawn_debug_object_at_target(target): 
 			# Create a debug cube at the location you want. 
 		var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
@@ -68,11 +78,16 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+	#if direction:
+		#velocity.x = direction.x * SPEED
+		#velocity.z = direction.z * SPEED
+	#else:
+		#velocity.x = move_toward(velocity.x, 0, SPEED)
+		#velocity.z = move_toward(velocity.z, 0, SPEED)	
+	if is_on_floor():
+		velocity.x = 0
+		velocity.z = 0
+		
+	_wirebug_launch()
 
 	move_and_slide()
