@@ -18,6 +18,7 @@ var debugCounter = 0
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var launchVector = Vector3(0, 0, 0)
+var worldTarget = Vector3(0, 0, 0)
 
 func _ready(): 
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -38,14 +39,16 @@ func _process(delta):
 	if Input.is_action_just_pressed("LaunchWirebug"):
 		if (!raycast.is_colliding()):
 			print("Shoot at usual location")
+			worldTarget	= raycast.get_global_transform() * raycast.get_target_position()
 		else: 
 			print("Shoot target at other location")
-		print(to_global(raycast.get_target_position()))
-		
+			worldTarget = raycast.get_collision_point()
+	
+		# Create a debug cube at the location you want. 
 		var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
 		var object = checker.instantiate();
 		object.set_name("Debug" + var_to_str(debugCounter))
-		object.set_position(raycast.get_global_transform() * raycast.get_target_position())
+		object.set_position(worldTarget)
 		get_parent().add_child(object)
 		
 		debugCounter = debugCounter + 1
