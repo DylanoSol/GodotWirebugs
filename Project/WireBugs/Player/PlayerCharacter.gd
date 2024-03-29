@@ -30,6 +30,9 @@ func _process(delta):
 		IsAiming = true; 
 	else:
 		IsAiming = false; 
+		
+	if Input.is_action_pressed("LaunchWirebug"):
+		pass
 	
 func _physics_process(delta):
 	# Add the gravity.
