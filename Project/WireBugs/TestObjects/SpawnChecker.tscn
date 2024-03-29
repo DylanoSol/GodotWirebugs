@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://gh78e4ttb57t"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vng7q"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="SpawnChecker" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_vng7q")
