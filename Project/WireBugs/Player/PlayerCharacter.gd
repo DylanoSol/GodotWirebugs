@@ -1,6 +1,7 @@
 extends CharacterBody3D
 @onready var camerafocus = $camerafocus
 @onready var visuals = $visuals
+@onready var raycast = $camerafocus/Camera3D/playerraycast
 
 @export var playernode : CharacterBody3D
 
@@ -31,8 +32,11 @@ func _process(delta):
 	else:
 		IsAiming = false; 
 		
-	if Input.is_action_pressed("LaunchWirebug"):
-		pass
+	if Input.is_action_just_pressed("LaunchWirebug"):
+		if (!raycast.is_colliding()):
+			print("Shoot at usual location")
+		else: 
+			print("Shoot target at other location")
 	
 func _physics_process(delta):
 	# Add the gravity.
