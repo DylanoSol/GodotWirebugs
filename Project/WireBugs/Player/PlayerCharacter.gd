@@ -15,6 +15,7 @@ const JUMP_VELOCITY = 4.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var launchVector = Vector3(0, 0, 0)
 
 func _ready(): 
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -37,6 +38,7 @@ func _process(delta):
 			print("Shoot at usual location")
 		else: 
 			print("Shoot target at other location")
+		print(to_global(raycast.get_target_position()))
 	
 func _physics_process(delta):
 	# Add the gravity.
