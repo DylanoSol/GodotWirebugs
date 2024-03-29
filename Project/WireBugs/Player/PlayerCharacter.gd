@@ -43,14 +43,16 @@ func _process(delta):
 		else: 
 			print("Shoot target at other location")
 			worldTarget = raycast.get_collision_point()
-	
-		# Create a debug cube at the location you want. 
+		_spawn_debug_object_at_target(worldTarget)
+		
+func _spawn_debug_object_at_target(target): 
+			# Create a debug cube at the location you want. 
 		var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
 		var object = checker.instantiate();
 		object.set_name("Debug" + var_to_str(debugCounter))
-		object.set_position(worldTarget)
+		object.set_position(target)
 		get_parent().add_child(object)
-		
+
 		debugCounter = debugCounter + 1
 	
 func _physics_process(delta):
