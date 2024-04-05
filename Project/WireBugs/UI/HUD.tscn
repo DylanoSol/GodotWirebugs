@@ -23,19 +23,19 @@ position = Vector2(576, 324)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_ogdep")
 
-[node name="ReadySymbol0" type="Sprite2D" parent="CanvasLayer"]
+[node name="ReadySymbol0" type="Sprite2D" parent="CanvasLayer" groups=["ReadySymbols"]]
 position = Vector2(528, 608)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_eofvv")
 script = ExtResource("4_dhs68")
 
-[node name="ReadySymbol1" type="Sprite2D" parent="CanvasLayer"]
+[node name="ReadySymbol1" type="Sprite2D" parent="CanvasLayer" groups=["ReadySymbols"]]
 position = Vector2(624, 608)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_eofvv")
 script = ExtResource("4_dhs68")
 
-[node name="ReadySymbol2" type="Sprite2D" parent="CanvasLayer"]
+[node name="ReadySymbol2" type="Sprite2D" parent="CanvasLayer" groups=["ReadySymbols"]]
 position = Vector2(576, 608)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_eofvv")

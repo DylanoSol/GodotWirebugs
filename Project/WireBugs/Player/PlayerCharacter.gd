@@ -2,6 +2,8 @@ extends CharacterBody3D
 @onready var camerafocus = $camerafocus
 @onready var visuals = $visuals
 @onready var raycast = $camerafocus/Camera3D/playerraycast
+@onready var hudreference : Control = get_node("/root/MHLevel/Hud")
+@onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
 
 @export var playernode : CharacterBody3D
 
@@ -31,6 +33,10 @@ func _input(event):
 		camerafocus.rotate_x(-deg_to_rad(event.relative.y) * camera_speed_y)
 
 func _process(delta): 
+	if (IsAiming) : 
+		crosshairreference.visible = true; 
+	else : 
+		crosshairreference.visible = false; 
 	pass
 	
 func _wirebug_launch():

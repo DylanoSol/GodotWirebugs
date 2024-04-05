@@ -1,6 +1,6 @@
 extends Node
 
-@export var isOnCooldown = true; 
+@export var isOnCooldown = false; 
 var baseCooldown = 10; 
 var cooldown = baseCooldown; 
 
