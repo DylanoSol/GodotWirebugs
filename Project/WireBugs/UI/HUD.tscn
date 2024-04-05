@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cytioeqa31q44"]
+[gd_scene load_steps=6 format=3 uid="uid://cytioeqa31q44"]
 
 [ext_resource type="Script" path="res://WireBugs/UI/HudFunctionality.gd" id="1_clp40"]
 [ext_resource type="Texture2D" uid="uid://bu25j4srr0nws" path="res://WireBugs/UI/Crosshair.png" id="1_ogdep"]
 [ext_resource type="Texture2D" uid="uid://cnf53iq1h0jm6" path="res://WireBugs/UI/Gear.png" id="3_eofvv"]
+[ext_resource type="Script" path="res://WireBugs/UI/ReadySymbol.gd" id="4_dhs68"]
 [ext_resource type="Script" path="res://WireBugs/UI/ChargeManager.gd" id="4_x8he7"]
 
 [node name="Hud" type="Control"]
@@ -23,14 +24,22 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_ogdep")
 
 [node name="ReadySymbol0" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(552, 424)
+position = Vector2(528, 608)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_eofvv")
+script = ExtResource("4_dhs68")
 
 [node name="ReadySymbol1" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(600, 424)
+position = Vector2(624, 608)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_eofvv")
+script = ExtResource("4_dhs68")
+
+[node name="ReadySymbol2" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(576, 608)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_eofvv")
+script = ExtResource("4_dhs68")
 
 [node name="ChargeManager" type="Node3D" parent="."]
 script = ExtResource("4_x8he7")
