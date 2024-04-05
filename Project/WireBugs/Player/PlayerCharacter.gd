@@ -3,6 +3,7 @@ extends CharacterBody3D
 @onready var visuals = $visuals
 @onready var raycast = $camerafocus/Camera3D/playerraycast
 @onready var hudreference : Control = get_node("/root/MHLevel/Hud")
+@onready var chargeManagerreference : Node3D = get_node("/root/MHLevel/Hud/ChargeManager")
 @onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
 
 @export var playernode : CharacterBody3D
@@ -46,20 +47,21 @@ func _wirebug_launch():
 		IsAiming = false; 
 		
 	if Input.is_action_just_pressed("LaunchWirebug"):
-		if (!raycast.is_colliding()):
-			print("Shoot at usual location")
-			worldTarget	= raycast.get_global_transform() * raycast.get_target_position()
-		else: 
-			print("Shoot target at other location")
-			worldTarget = raycast.get_collision_point()
+		if (chargeManagerreference.requestCharge()) : 
+			if (!raycast.is_colliding()):
+				print("Shoot at usual location")
+				worldTarget	= raycast.get_global_transform() * raycast.get_target_position()
+			else: 
+				print("Shoot target at other location")
+				worldTarget = raycast.get_collision_point()
+				
+			_spawn_debug_object_at_target(worldTarget)
 			
-		_spawn_debug_object_at_target(worldTarget)
-		
-		# Apply some velocity
-		launchVector = worldTarget - raycast.get_global_position()
-		velocity += launchVector 
-		
-		print(launchVector)
+			# Apply some velocity
+			launchVector = worldTarget - raycast.get_global_position()
+			velocity += launchVector 
+			
+			print(launchVector)
 	
 func _spawn_debug_object_at_target(target): 
 			# Create a debug cube at the location you want. 

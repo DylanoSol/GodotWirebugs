@@ -1,6 +1,4 @@
 extends Node3D
-
-
 @onready var readySymbols = get_tree().get_nodes_in_group("ReadySymbols"); 
 
 # Called when the node enters the scene tree for the first time.
@@ -17,6 +15,6 @@ func requestCharge() -> bool :
 		if (symbol.isOnCooldown) : 
 			continue; 
 		else :
-			symbol.isOnCoolDown = true; 
+			symbol.isOnCooldown = true; 
 			return true; 
 	return false; 
