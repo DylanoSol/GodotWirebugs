@@ -6,22 +6,25 @@ extends CharacterBody3D
 @onready var hudreference : Control = get_node("/root/MHLevel/Hud")
 @onready var chargeManagerreference : Node3D = get_node("/root/MHLevel/Hud/ChargeManager")
 @onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
+@onready var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
 
 const wirebugDistance = Vector3(0, 3, 0)
 
 @export var playernode : CharacterBody3D
-@export var IsAiming = false; 
-@export var InWirebugAnimation = false; 
+@export var IsAiming : bool = false; 
+@export var InWirebugAnimation : bool = false; 
 
-var WirebugJoint = 	JoltGeneric6DOFJoint3D.new()
+var WirebugJoint : JoltGeneric6DOFJoint3D = null;
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+const SPEED : float = 5.0
+const JUMP_VELOCITY : float = 4.5
 
-@export var camera_speed_x = 0.5
-@export var camera_speed_y = 0.5
+@export var camera_speed_x : float = 0.5
+@export var camera_speed_y : float = 0.5
 
-var debugCounter = 0
+var debugCounter : int = 0
+
+var currentHangingObject = null; 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -53,9 +56,31 @@ func handle_player_aim():
 		crosshairreference.visible = false; 
 
 func wirehang_start(): 
-	var objectSpawnOffset = self.position + wirebugDistance; 
-	_spawn_debug_object_at_target(objectSpawnOffset)
-	pass
+	# Add debug object to scene
+	var objectSpawnOffset = self.global_position + wirebugDistance
+	var tempObject = _spawn_debug_object_at_target(objectSpawnOffset)
+	
+	add_child(tempObject)
+	
+	tempObject.global_position = self.global_position + wirebugDistance
+	tempObject.top_level = true
+	
+	# Configure joint
+	WirebugJoint = JoltGeneric6DOFJoint3D.new()
+	
+	add_child(WirebugJoint)
+	
+	WirebugJoint.global_position = tempObject.global_position - Vector3(0, 0.5, 0)
+	WirebugJoint.top_level = true; 
+	
+	var JointPath : NodePath = WirebugJoint.get_path()
+	var PlayerPath : NodePath = get_path()
+	
+	WirebugJoint.set_node_a(JointPath)
+	WirebugJoint.set_node_b(PlayerPath)
+	
+	print(WirebugJoint.node_a)
+	print(WirebugJoint.node_b)
 		
 func wirebug_launch():
 	if (chargeManagerreference.requestCharge()) : 
@@ -66,7 +91,9 @@ func wirebug_launch():
 			print("Shoot target at other location")
 			worldTarget = raycast.get_collision_point()
 			
-		_spawn_debug_object_at_target(worldTarget)
+		var object = _spawn_debug_object_at_target(worldTarget)
+		
+		get_parent().add_child(object)
 		
 		# Apply some velocity
 		launchVector = worldTarget - raycast.get_global_position()
@@ -74,15 +101,17 @@ func wirebug_launch():
 		
 		print(launchVector)
 	
-func _spawn_debug_object_at_target(target): 
-			# Create a debug cube at the location you want. 
-		var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
+func _spawn_debug_object_at_target(target) -> Node3D :
+	
+		# Create a debug cube at the location you want.
 		var object = checker.instantiate();
+		
 		object.set_name("Debug" + var_to_str(debugCounter))
 		object.set_position(target)
-		get_parent().add_child(object)
-
+		
 		debugCounter = debugCounter + 1
+		
+		return object
 	
 func _physics_process(delta):
 	# Add the gravity.
