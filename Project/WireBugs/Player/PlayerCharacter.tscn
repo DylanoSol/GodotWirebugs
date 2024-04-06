@@ -1,14 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://cxcv3bkpdfc0o"]
+[gd_scene load_steps=6 format=3 uid="uid://cxcv3bkpdfc0o"]
 
 [ext_resource type="Script" path="res://WireBugs/Player/PlayerCharacter.gd" id="1_t381y"]
 [ext_resource type="PackedScene" uid="uid://bdq6ajic6fjrf" path="res://WireBugs/Models/mixamo_base.glb" id="2_mqs26"]
 [ext_resource type="Script" path="res://WireBugs/Player/PlayerRayCast.gd" id="3_fmo78"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_sjhwi"]
+friction = 0.0
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3nvhp"]
 radius = 0.3
 height = 1.8
 
-[node name="PlayerCharacter" type="CharacterBody3D" node_paths=PackedStringArray("playernode")]
+[node name="PlayerCharacter" type="RigidBody3D" node_paths=PackedStringArray("playernode")]
+collision_mask = 3
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+physics_material_override = SubResource("PhysicsMaterial_sjhwi")
 script = ExtResource("1_t381y")
 playernode = NodePath(".")
 
@@ -32,3 +40,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.643514, 3.305)
 target_position = Vector3(0, 0, -10)
 hit_back_faces = false
 script = ExtResource("3_fmo78")
+
+[node name="GroundRayCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+target_position = Vector3(0, -0.95, 0)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5

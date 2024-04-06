@@ -1,6 +1,6 @@
 extends CanvasLayer
 @onready var crosshair = $Crosshair
-@onready var playerref : CharacterBody3D = get_node("/root/MHLevel/PlayerCharacter")
+@onready var playerref : RigidBody3D = get_node("/root/MHLevel/PlayerCharacter")
 
 var firstFrame = true; 
 

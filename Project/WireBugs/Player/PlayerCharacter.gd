@@ -1,8 +1,12 @@
-extends CharacterBody3D
+extends RigidBody3D
+
+var _pid : Pid3D = Pid3D.new(1.0, 0.1, 1.0)
 
 @onready var camerafocus = $camerafocus
 @onready var visuals = $visuals
 @onready var raycast = $camerafocus/Camera3D/playerraycast
+@onready var groundraycast = $GroundRayCast
+
 @onready var hudreference : Control = get_node("/root/MHLevel/Hud")
 @onready var chargeManagerreference : Node3D = get_node("/root/MHLevel/Hud/ChargeManager")
 @onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
@@ -16,8 +20,10 @@ const wirebugDistance = Vector3(0, 3, 0)
 
 var WirebugJoint : JoltGeneric6DOFJoint3D = null;
 
-const SPEED : float = 5.0
+const SPEED : float = 5
 const JUMP_VELOCITY : float = 4.5
+
+var velocity : Vector3 = Vector3(0, 0, 0)
 
 @export var camera_speed_x : float = 0.5
 @export var camera_speed_y : float = 0.5
@@ -40,7 +46,11 @@ func _input(event):
 		rotate_y(-deg_to_rad(event.relative.x) * camera_speed_x)
 		# y axis mouse movement. Do this on the camera focus
 		camerafocus.rotate_x(-deg_to_rad(event.relative.y) * camera_speed_y)
+		
+func is_on_floor() -> bool: 
+	return (groundraycast.is_colliding())
 
+	
 func _process(delta): 
 	handle_player_aim()
 	
@@ -114,9 +124,15 @@ func _spawn_debug_object_at_target(target) -> Node3D :
 		return object
 	
 func _physics_process(delta):
+	
 	# Add the gravity.
+	print(groundraycast.is_colliding())
+	
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+	else: 
+		if (linear_velocity.y < 0): 
+			velocity.y = 0
 		
 	# General Player Movement 
 	player_movement(delta)
@@ -129,7 +145,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("WireHang") && !is_on_floor(): 
 		wirehang_start() 
 		
-	move_and_slide()
+	linear_velocity = velocity; 
+	print (linear_velocity)
+		
 
 func player_movement(delta): 
 		# Handle jump.
@@ -138,8 +156,7 @@ func player_movement(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir = Input.get_vector("left", "right", "forward", "backward")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction = (transform.basis * Vector3(Input.get_action_strength("right") - Input.get_action_strength("left"),0, Input.get_action_strength("backward") - Input.get_action_strength("forward"))).normalized().rotated(Vector3.UP, camerafocus.rotation.y)
 	
 	if direction && is_on_floor():
 		velocity.x = direction.x * SPEED
