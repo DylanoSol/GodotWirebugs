@@ -83,7 +83,14 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 		
+	# General Player Movement 
 	player_movement(delta)
+	
+	# Launch Wirebug
+	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
+		wirebug_launch()
+		
+	move_and_slide()
 
 func player_movement(delta): 
 		# Handle jump.
@@ -98,12 +105,8 @@ func player_movement(delta):
 	if direction && is_on_floor():
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		
+	
+	# Only slow down when you are not in an animation and want to stand still. 
 	if (!direction && !InWirebugAnimation && is_on_floor()) :
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)	
-		
-	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
-		wirebug_launch()
-
-	move_and_slide()
