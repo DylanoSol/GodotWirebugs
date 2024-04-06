@@ -7,11 +7,13 @@ extends CharacterBody3D
 @onready var chargeManagerreference : Node3D = get_node("/root/MHLevel/Hud/ChargeManager")
 @onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
 
+const wirebugDistance = Vector3(0, 3, 0)
+
 @export var playernode : CharacterBody3D
-
 @export var IsAiming = false; 
-
 @export var InWirebugAnimation = false; 
+
+var WirebugJoint = 	JoltGeneric6DOFJoint3D.new()
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -50,6 +52,10 @@ func handle_player_aim():
 	else: 
 		crosshairreference.visible = false; 
 
+func wirehang_start(): 
+	var objectSpawnOffset = self.position + wirebugDistance; 
+	_spawn_debug_object_at_target(objectSpawnOffset)
+	pass
 		
 func wirebug_launch():
 	if (chargeManagerreference.requestCharge()) : 
@@ -89,6 +95,10 @@ func _physics_process(delta):
 	# Launch Wirebug
 	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
 		wirebug_launch()
+		
+	# Wirehang
+	if Input.is_action_just_pressed("WireHang") && !is_on_floor(): 
+		wirehang_start() 
 		
 	move_and_slide()
 
