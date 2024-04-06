@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bpvnirvk3gule"]
+[gd_scene load_steps=8 format=3 uid="uid://bpvnirvk3gule"]
 
 [ext_resource type="PackedScene" uid="uid://cxcv3bkpdfc0o" path="res://WireBugs/Player/PlayerCharacter.tscn" id="1_fim3r"]
 [ext_resource type="Script" path="res://WireBugs/LevelScript.gd" id="1_p2ou3"]
 [ext_resource type="PackedScene" uid="uid://bk3ar8ltshs5r" path="res://TestCodeToLearn/TestRigidBody.tscn" id="2_qcg8e"]
 [ext_resource type="PackedScene" uid="uid://cytioeqa31q44" path="res://WireBugs/UI/HUD.tscn" id="3_dmb1n"]
+[ext_resource type="PackedScene" uid="uid://doancd8dh8gc5" path="res://WireBugs/TestObjects/JointBodyHelper.tscn" id="5_aceg0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_fcu5s"]
 size = Vector3(1000, 20, 1000)
@@ -48,3 +49,6 @@ transform = Transform3D(0.157675, 0, -0.987491, 0, 1, 0, 0.987491, 0, 0.157675, 
 transform = Transform3D(0.791554, 0, -0.611099, 0, 1, 0, 0.611099, 0, 0.791554, 1.8023, 0.744165, -1.34215)
 
 [node name="Hud" parent="." instance=ExtResource("3_dmb1n")]
+
+[node name="JointBodyHelper" parent="." instance=ExtResource("5_aceg0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35766, -2.04845)

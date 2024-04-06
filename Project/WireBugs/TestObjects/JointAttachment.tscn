@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://e8n0fi2gkm8n"]
+
+[node name="JointAttachment" type="Node3D"]
