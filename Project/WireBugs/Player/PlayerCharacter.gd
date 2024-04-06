@@ -46,7 +46,7 @@ func _wirebug_launch():
 	else:
 		IsAiming = false; 
 		
-	if Input.is_action_just_pressed("LaunchWirebug"):
+	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
 		if (chargeManagerreference.requestCharge()) : 
 			if (!raycast.is_colliding()):
 				print("Shoot at usual location")
@@ -59,7 +59,8 @@ func _wirebug_launch():
 			
 			# Apply some velocity
 			launchVector = worldTarget - raycast.get_global_position()
-			velocity += launchVector 
+			velocity = launchVector 
+			move_and_slide(); 
 			
 			print(launchVector)
 	
