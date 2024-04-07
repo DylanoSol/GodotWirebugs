@@ -13,7 +13,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.564961, 0)
 script = ExtResource("1_k08y0")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48241, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.11303, 0)
 collision_layer = 4
 collision_mask = 4
 gravity_scale = 0.0
@@ -27,6 +27,7 @@ mesh = SubResource("BoxMesh_2wgnv")
 
 [node name="DanglingBody" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.554573, 0)
+visible = false
 collision_layer = 4
 collision_mask = 4
 freeze_mode = 1
@@ -38,6 +39,6 @@ shape = SubResource("BoxShape3D_41vft")
 mesh = SubResource("BoxMesh_2wgnv")
 
 [node name="ConeTwistJoint3D" type="ConeTwistJoint3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00192094, 1.59038, -0.00441635)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00192094, 2.21838, -0.00441635)
 node_a = NodePath("../RigidBody3D")
 node_b = NodePath("../DanglingBody")
