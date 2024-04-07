@@ -7,7 +7,8 @@ extends CharacterBody3D
 @onready var chargeManagerreference : Node3D = get_node("/root/MHLevel/Hud/ChargeManager")
 @onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
 @onready var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
-@onready var jointhelperspawner = load("res://WireBugs/TestObjects/JointBodyHelper.tscn")
+@onready var dangletestspawner = load("res://WireBugs/TestObjects/DanglingTest.tscn")
+var dangleHelper : Node3D = null
 
 const wirebugDistance = Vector3(0, 3, 0)
 
@@ -15,7 +16,7 @@ const wirebugDistance = Vector3(0, 3, 0)
 @export var IsAiming : bool = false; 
 @export var InWirebugAnimation : bool = false; 
 
-var WirebugJoint : JoltGeneric6DOFJoint3D = null;
+var WirebugJoint : JoltConeTwistJoint3D = null;
 
 const SPEED : float = 5.0
 const JUMP_VELOCITY : float = 4.5
@@ -57,59 +58,27 @@ func handle_player_aim():
 		crosshairreference.visible = false; 
 
 func wirehang_start(): 
-	# Add debug object to scene
-	var objectSpawnOffset = self.global_position + wirebugDistance
-	var tempObject = _spawn_debug_object_at_target(objectSpawnOffset)
 	
-	var helper = jointhelperspawner.instantiate()
+	# Clean up any remaining actors
+	if (dangleHelper != null): 
+		dangleHelper.queue_free()
 	
-	add_child(helper)
+	# Spawn test actor that dangles around
+	dangleHelper = dangletestspawner.instantiate()
+	add_child(dangleHelper)
+	dangleHelper.top_level = true
+	dangleHelper.global_position = self.global_position + Vector3(0, 0.5, 0)
 	
-	helper.global_position	= self.global_position
-	helper.top_level = true
+	# Hardcode the path because why not
+	var danglingbody : RigidBody3D = dangleHelper.get_child(1)
 	
-	add_child(tempObject)
+	# Apply impulse that matches player movement
+	var appliedVelocity = velocity
+	if (velocity.length() > 1): 
+		appliedVelocity = velocity.normalized()
+		
+	danglingbody.apply_central_impulse(velocity.normalized())
 	
-	tempObject.global_position = self.global_position + wirebugDistance
-	tempObject.top_level = true
-	
-	# Configure joint
-	WirebugJoint = JoltGeneric6DOFJoint3D.new()
-	
-	add_child(WirebugJoint)
-	
-	WirebugJoint.global_position = tempObject.global_position - Vector3(0, 0.5, 0)
-	WirebugJoint.top_level = true; 
-	
-	var ObjectPath : NodePath = tempObject.get_path()
-	var HelperPath : NodePath = helper.get_path()
-	
-	WirebugJoint.set_node_a(ObjectPath)
-	WirebugJoint.set_node_b(HelperPath)
-
-		# Enable constraints on all axes
-	WirebugJoint.set_flag_x(JoltGeneric6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
-	WirebugJoint.set_flag_y(JoltGeneric6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
-	WirebugJoint.set_flag_z(JoltGeneric6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
-
-	# Set linear limits for all axes
-	WirebugJoint.set_param_x(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_LOWER, -2)
-	WirebugJoint.set_param_x(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_UPPER, 2)
-	WirebugJoint.set_param_y(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_LOWER, -2)
-	WirebugJoint.set_param_y(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_UPPER, 2)
-	WirebugJoint.set_param_z(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_LOWER, -2)
-	WirebugJoint.set_param_z(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_UPPER, 2)
-
-	# Enable damping for all axes
-	WirebugJoint.set_param_x(JoltGeneric6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.000001)
-	WirebugJoint.set_param_y(JoltGeneric6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.000001)
-	WirebugJoint.set_param_z(JoltGeneric6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.000001)
-	
-	WirebugJoint.enabled = true; 
-	WirebugJoint.solver_position_iterations = 10; 
-	WirebugJoint.solver_velocity_iterations = 10;
-	
-	# helper.apply_central_impulse(Vector3(5, 0, 5))
 		
 func wirebug_launch():
 	if (chargeManagerreference.requestCharge()) : 
