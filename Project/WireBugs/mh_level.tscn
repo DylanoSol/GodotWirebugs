@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://WireBugs/LevelScript.gd" id="1_p2ou3"]
 [ext_resource type="PackedScene" uid="uid://bk3ar8ltshs5r" path="res://TestCodeToLearn/TestRigidBody.tscn" id="2_qcg8e"]
 [ext_resource type="PackedScene" uid="uid://cytioeqa31q44" path="res://WireBugs/UI/HUD.tscn" id="3_dmb1n"]
-[ext_resource type="PackedScene" uid="uid://doancd8dh8gc5" path="res://WireBugs/TestObjects/JointBodyHelper.tscn" id="5_aceg0"]
+[ext_resource type="PackedScene" uid="uid://c25fbmcc2vveq" path="res://WireBugs/TestObjects/DanglingTest.tscn" id="5_5rg8p"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_fcu5s"]
 size = Vector3(1000, 20, 1000)
@@ -50,5 +50,5 @@ transform = Transform3D(0.791554, 0, -0.611099, 0, 1, 0, 0.611099, 0, 0.791554, 
 
 [node name="Hud" parent="." instance=ExtResource("3_dmb1n")]
 
-[node name="JointBodyHelper" parent="." instance=ExtResource("5_aceg0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35766, -2.04845)
+[node name="DanglingTest" parent="." instance=ExtResource("5_5rg8p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.344824, 2.40983, -1.79902)

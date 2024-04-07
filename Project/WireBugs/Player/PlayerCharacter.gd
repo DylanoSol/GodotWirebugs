@@ -7,6 +7,7 @@ extends CharacterBody3D
 @onready var chargeManagerreference : Node3D = get_node("/root/MHLevel/Hud/ChargeManager")
 @onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
 @onready var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
+@onready var jointhelperspawner = load("res://WireBugs/TestObjects/JointBodyHelper.tscn")
 
 const wirebugDistance = Vector3(0, 3, 0)
 
@@ -60,6 +61,13 @@ func wirehang_start():
 	var objectSpawnOffset = self.global_position + wirebugDistance
 	var tempObject = _spawn_debug_object_at_target(objectSpawnOffset)
 	
+	var helper = jointhelperspawner.instantiate()
+	
+	add_child(helper)
+	
+	helper.global_position	= self.global_position
+	helper.top_level = true
+	
 	add_child(tempObject)
 	
 	tempObject.global_position = self.global_position + wirebugDistance
@@ -73,14 +81,35 @@ func wirehang_start():
 	WirebugJoint.global_position = tempObject.global_position - Vector3(0, 0.5, 0)
 	WirebugJoint.top_level = true; 
 	
-	var JointPath : NodePath = WirebugJoint.get_path()
-	var PlayerPath : NodePath = get_path()
+	var ObjectPath : NodePath = tempObject.get_path()
+	var HelperPath : NodePath = helper.get_path()
 	
-	WirebugJoint.set_node_a(JointPath)
-	WirebugJoint.set_node_b(PlayerPath)
+	WirebugJoint.set_node_a(ObjectPath)
+	WirebugJoint.set_node_b(HelperPath)
+
+		# Enable constraints on all axes
+	WirebugJoint.set_flag_x(JoltGeneric6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
+	WirebugJoint.set_flag_y(JoltGeneric6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
+	WirebugJoint.set_flag_z(JoltGeneric6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
+
+	# Set linear limits for all axes
+	WirebugJoint.set_param_x(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_LOWER, -2)
+	WirebugJoint.set_param_x(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_UPPER, 2)
+	WirebugJoint.set_param_y(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_LOWER, -2)
+	WirebugJoint.set_param_y(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_UPPER, 2)
+	WirebugJoint.set_param_z(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_LOWER, -2)
+	WirebugJoint.set_param_z(JoltGeneric6DOFJoint3D.PARAM_LINEAR_LIMIT_UPPER, 2)
+
+	# Enable damping for all axes
+	WirebugJoint.set_param_x(JoltGeneric6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.000001)
+	WirebugJoint.set_param_y(JoltGeneric6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.000001)
+	WirebugJoint.set_param_z(JoltGeneric6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.000001)
 	
-	print(WirebugJoint.node_a)
-	print(WirebugJoint.node_b)
+	WirebugJoint.enabled = true; 
+	WirebugJoint.solver_position_iterations = 10; 
+	WirebugJoint.solver_velocity_iterations = 10;
+	
+	# helper.apply_central_impulse(Vector3(5, 0, 5))
 		
 func wirebug_launch():
 	if (chargeManagerreference.requestCharge()) : 
@@ -91,9 +120,9 @@ func wirebug_launch():
 			print("Shoot target at other location")
 			worldTarget = raycast.get_collision_point()
 			
-		var object = _spawn_debug_object_at_target(worldTarget)
+		# var object = _spawn_debug_object_at_target(worldTarget)
 		
-		get_parent().add_child(object)
+		# get_parent().add_child(object)
 		
 		# Apply some velocity
 		launchVector = worldTarget - raycast.get_global_position()

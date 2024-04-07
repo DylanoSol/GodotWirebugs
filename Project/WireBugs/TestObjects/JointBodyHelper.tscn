@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://doancd8dh8gc5"]
+[gd_scene load_steps=4 format=3 uid="uid://doancd8dh8gc5"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2y7gw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uli77"]
 size = Vector3(0.2, 0.2, 0.2)
@@ -9,6 +11,8 @@ size = Vector3(0.2, 0.2, 0.2)
 [node name="JointBodyHelper" type="RigidBody3D"]
 collision_layer = 4
 collision_mask = 4
+physics_material_override = SubResource("PhysicsMaterial_2y7gw")
+freeze_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_uli77")

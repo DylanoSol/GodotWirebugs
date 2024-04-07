@@ -1,9 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://gh78e4ttb57t"]
+[gd_scene load_steps=4 format=3 uid="uid://gh78e4ttb57t"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vng7q"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_d3ip7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_11v6g"]
 size = Vector3(0.3, 0.3, 0.3)
 
 [node name="SpawnChecker" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_vng7q")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+collision_layer = 4
+collision_mask = 4
+physics_material_override = SubResource("PhysicsMaterial_d3ip7")
+gravity_scale = 0.0
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_11v6g")
