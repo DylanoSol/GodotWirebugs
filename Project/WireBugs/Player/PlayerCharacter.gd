@@ -8,7 +8,10 @@ extends CharacterBody3D
 @onready var crosshairreference : Sprite2D = get_node("/root/MHLevel/Hud/CanvasLayer/Crosshair")
 @onready var checker = load("res://WireBugs/TestObjects/SpawnChecker.tscn") 
 @onready var dangletestspawner = load("res://WireBugs/TestObjects/DanglingTest.tscn")
-var dangleHelper : Node3D = null
+var dangleHelper : Node3D = null; 
+
+var isWireHanging : bool = false;
+var danglingBody : RigidBody3D = null; 
 
 const wirebugDistance = Vector3(0, 3, 0)
 
@@ -59,45 +62,52 @@ func handle_player_aim():
 
 func wirehang_start(): 
 	
-	# Clean up any remaining actors
-	if (dangleHelper != null): 
-		dangleHelper.queue_free()
+	if Input.is_action_just_pressed("WireHang") && !is_on_floor(): 
+		# Clean up any remaining actors
+		if (dangleHelper != null): 
+			dangleHelper.queue_free()
 	
-	# Spawn test actor that dangles around
-	dangleHelper = dangletestspawner.instantiate()
-	add_child(dangleHelper)
-	dangleHelper.top_level = true
-	dangleHelper.global_position = self.global_position + Vector3(0, 0.5, 0)
-	
-	# Hardcode the path because why not
-	var danglingbody : RigidBody3D = dangleHelper.get_child(1)
-	
-	# Apply impulse that matches player movement
-	var appliedVelocity = velocity
-	if (velocity.length() > 1): 
-		appliedVelocity = velocity.normalized()
+		# Spawn test actor that dangles around
+		dangleHelper = dangletestspawner.instantiate()
+		add_child(dangleHelper)
+		dangleHelper.top_level = true
+		dangleHelper.global_position = self.global_position
 		
-	danglingbody.apply_central_impulse(velocity.normalized())
+		# Hardcode the path because why not
+		danglingBody = dangleHelper.get_child(1)
 	
+		# Apply impulse that matches player movement
+		var appliedVelocity = velocity
+		if (velocity.length() > 1): 
+			appliedVelocity = velocity.normalized()
+			
+		danglingBody.apply_central_impulse(velocity.normalized())
+		isWireHanging = true
+		
+func wirehang_update(): 
+	if (isWireHanging && danglingBody != null): 
+		velocity = Vector3(0, 0, 0)
+		global_position = danglingBody.global_position - Vector3(0, 1, 0)
 		
 func wirebug_launch():
-	if (chargeManagerreference.requestCharge()) : 
-		if (!raycast.is_colliding()):
-			print("Shoot at usual location")
-			worldTarget	= raycast.get_global_transform() * raycast.get_target_position()
-		else: 
-			print("Shoot target at other location")
-			worldTarget = raycast.get_collision_point()
+	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
+		if (chargeManagerreference.requestCharge()) : 
+			if (!raycast.is_colliding()):
+				print("Shoot at usual location")
+				worldTarget	= raycast.get_global_transform() * raycast.get_target_position()
+			else: 
+				print("Shoot target at other location")
+				worldTarget = raycast.get_collision_point()
 			
-		# var object = _spawn_debug_object_at_target(worldTarget)
+			# var object = _spawn_debug_object_at_target(worldTarget)
 		
-		# get_parent().add_child(object)
+			# get_parent().add_child(object)
 		
-		# Apply some velocity
-		launchVector = worldTarget - raycast.get_global_position()
-		velocity = launchVector 
+			# Apply some velocity
+			launchVector = worldTarget - raycast.get_global_position()
+			velocity = launchVector 
 		
-		print(launchVector)
+			print(launchVector)
 	
 func _spawn_debug_object_at_target(target) -> Node3D :
 	
@@ -120,12 +130,11 @@ func _physics_process(delta):
 	player_movement(delta)
 	
 	# Launch Wirebug
-	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
-		wirebug_launch()
+	wirebug_launch()
 		
 	# Wirehang
-	if Input.is_action_just_pressed("WireHang") && !is_on_floor(): 
-		wirehang_start() 
+	wirehang_start() 
+	wirehang_update()
 		
 	move_and_slide()
 
