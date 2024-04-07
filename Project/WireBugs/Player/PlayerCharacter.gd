@@ -10,6 +10,8 @@ extends CharacterBody3D
 @onready var dangletestspawner = load("res://WireBugs/TestObjects/DanglingTest.tscn")
 var dangleHelper : Node3D = null; 
 
+var direction : Vector3 = Vector3(0, 0, 0)
+
 var isWireHanging : bool = false;
 var danglingBody : RigidBody3D = null; 
 
@@ -65,6 +67,7 @@ func wirehang_start():
 	if Input.is_action_just_pressed("WireHang") && !is_on_floor(): 
 		# Clean up any remaining actors
 		if (dangleHelper != null): 
+			remove_child(dangleHelper)
 			dangleHelper.queue_free()
 	
 		# Spawn test actor that dangles around
@@ -88,6 +91,10 @@ func wirehang_update():
 	if (isWireHanging && danglingBody != null): 
 		velocity = Vector3(0, 0, 0)
 		global_position = danglingBody.global_position - Vector3(0, 1, 0)
+		
+		if (Input.is_action_just_pressed("ui_accept")): 
+			velocity = direction * 4 + Vector3(0, JUMP_VELOCITY * 0.2, 0)
+			isWireHanging = false
 		
 func wirebug_launch():
 	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
@@ -146,7 +153,7 @@ func player_movement(delta):
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if direction && is_on_floor():
 		velocity.x = direction.x * SPEED
