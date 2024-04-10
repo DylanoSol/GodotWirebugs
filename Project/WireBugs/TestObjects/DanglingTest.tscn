@@ -1,11 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://c25fbmcc2vveq"]
+[gd_scene load_steps=6 format=3 uid="uid://c25fbmcc2vveq"]
 
 [ext_resource type="Script" path="res://WireBugs/TestObjects/DanglingTest.gd" id="1_k08y0"]
+[ext_resource type="Shader" path="res://WireBugs/TestObjects/DanglingTest.gdshader" id="2_v7ou4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_41vft"]
 size = Vector3(0.2, 0.2, 0.2)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a73fl"]
+render_priority = 0
+shader = ExtResource("2_v7ou4")
+
 [sub_resource type="BoxMesh" id="BoxMesh_2wgnv"]
+material = SubResource("ShaderMaterial_a73fl")
 size = Vector3(0.2, 0.2, 0.2)
 
 [node name="DanglingTest" type="Node3D"]
