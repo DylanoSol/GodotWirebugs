@@ -12,6 +12,7 @@ var dangleHelper : Node3D = null;
 
 var baseWireHangTimer : float = 4.
 var wireHangTimer : float = baseWireHangTimer
+var wireHangOnCooldown : bool = false; 
 
 var direction : Vector3 = Vector3(0, 0, 0)
 
@@ -75,8 +76,10 @@ func dangleHelper_delete():
 		
 		
 func wirehang_start(): 
+	if (is_on_floor()): 
+		wireHangOnCooldown = false; 
 	
-	if Input.is_action_just_pressed("WireHang") && !is_on_floor(): 
+	if (Input.is_action_just_pressed("WireHang") && !is_on_floor() && !wireHangOnCooldown): 
 		dangleHelper_delete()
 	
 		# Spawn test actor that dangles around
@@ -96,6 +99,7 @@ func wirehang_start():
 		danglingBody.apply_central_impulse(velocity.normalized())
 		isWireHanging = true
 		wireHangTimer = baseWireHangTimer
+		wireHangOnCooldown = true; 
 		
 func wirehang_update(delta): 
 	# Make sure the player follows the wirehang
@@ -122,7 +126,7 @@ func wirehang_update(delta):
 		
 		
 func wirebug_launch():
-	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
+	if (Input.is_action_just_pressed("LaunchWirebug") && IsAiming):
 		if (chargeManagerreference.requestCharge()) : 
 			if (!raycast.is_colliding()):
 				print("Shoot at usual location")
@@ -130,16 +134,12 @@ func wirebug_launch():
 			else: 
 				print("Shoot target at other location")
 				worldTarget = raycast.get_collision_point()
-			
-			# var object = _spawn_debug_object_at_target(worldTarget)
-		
-			# get_parent().add_child(object)
 		
 			# Apply some velocity
 			launchVector = worldTarget - raycast.get_global_position()
 			velocity = launchVector 
 		
-			print(launchVector)
+			wireHangOnCooldown = false
 	
 func _spawn_debug_object_at_target(target) -> Node3D :
 	
@@ -172,7 +172,7 @@ func _physics_process(delta):
 
 func player_movement(delta): 
 		# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if (Input.is_action_just_pressed("ui_accept") and is_on_floor()):
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
@@ -180,7 +180,7 @@ func player_movement(delta):
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	if direction && is_on_floor():
+	if (direction && is_on_floor()):
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 	
