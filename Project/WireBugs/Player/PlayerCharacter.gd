@@ -138,10 +138,13 @@ func wirebug_launch():
 			# Apply some velocity
 			launchVector = worldTarget - raycast.get_global_position()
 			velocity = launchVector 
+			
+			var visual = spawn_debug_object_at_target(worldTarget)
+			get_parent().add_child(visual)
 		
 			wireHangOnCooldown = false
 	
-func _spawn_debug_object_at_target(target) -> Node3D :
+func spawn_debug_object_at_target(target) -> Node3D :
 	
 		# Create a debug cube at the location you want.
 		var object = checker.instantiate();

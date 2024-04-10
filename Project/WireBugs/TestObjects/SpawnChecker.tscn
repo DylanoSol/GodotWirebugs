@@ -1,6 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://gh78e4ttb57t"]
+[gd_scene load_steps=7 format=3 uid="uid://gh78e4ttb57t"]
+
+[ext_resource type="Script" path="res://WireBugs/TestObjects/SpawnChecker.gd" id="1_jrdgk"]
+[ext_resource type="Shader" path="res://WireBugs/TestObjects/DanglingTest.gdshader" id="2_n6l1a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2il1g"]
+render_priority = 0
+shader = ExtResource("2_n6l1a")
 
 [sub_resource type="BoxMesh" id="BoxMesh_vng7q"]
+material = SubResource("ShaderMaterial_2il1g")
 size = Vector3(0.3, 0.3, 0.3)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_d3ip7"]
@@ -9,6 +17,7 @@ size = Vector3(0.3, 0.3, 0.3)
 size = Vector3(0.3, 0.3, 0.3)
 
 [node name="SpawnChecker" type="Node3D"]
+script = ExtResource("1_jrdgk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_vng7q")
