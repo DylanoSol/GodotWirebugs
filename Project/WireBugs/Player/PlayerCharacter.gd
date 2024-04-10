@@ -89,7 +89,7 @@ func wirehang_start():
 		dangleHelper.global_position = self.global_position
 		
 		# Hardcode the path because why not
-		danglingBody = dangleHelper.get_child(1)
+		danglingBody = dangleHelper.get_child(3)
 	
 		# Apply impulse that matches player movement
 		var appliedVelocity = velocity
@@ -105,7 +105,7 @@ func wirehang_update(delta):
 	# Make sure the player follows the wirehang
 	if (isWireHanging && danglingBody != null): 
 		velocity = Vector3(0, 0, 0)
-		global_position = danglingBody.global_position
+		global_position = danglingBody.global_position - Vector3(0, 1.0, 0)
 		
 		# Jump off
 		if (Input.is_action_just_pressed("ui_accept")): 

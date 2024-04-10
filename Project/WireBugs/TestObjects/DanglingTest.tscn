@@ -31,6 +31,30 @@ shape = SubResource("BoxShape3D_41vft")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
 mesh = SubResource("BoxMesh_2wgnv")
 
+[node name="RopeBody" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15803, 0)
+collision_layer = 4
+collision_mask = 4
+freeze_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RopeBody"]
+shape = SubResource("BoxShape3D_41vft")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RopeBody"]
+mesh = SubResource("BoxMesh_2wgnv")
+
+[node name="RopeBody2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.281642, 0)
+collision_layer = 4
+collision_mask = 4
+freeze_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RopeBody2"]
+shape = SubResource("BoxShape3D_41vft")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RopeBody2"]
+mesh = SubResource("BoxMesh_2wgnv")
+
 [node name="DanglingBody" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.554573, 0)
 visible = false
@@ -47,4 +71,19 @@ mesh = SubResource("BoxMesh_2wgnv")
 [node name="ConeTwistJoint3D" type="ConeTwistJoint3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00192094, 2.21838, -0.00441635)
 node_a = NodePath("../RigidBody3D")
+node_b = NodePath("../DanglingBody")
+
+[node name="ConeTwistJoint3D2" type="ConeTwistJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00192094, 2.21838, -0.00441635)
+node_a = NodePath("../RigidBody3D")
+node_b = NodePath("../RopeBody")
+
+[node name="ConeTwistJoint3D3" type="ConeTwistJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00192094, 1.21201, -0.00441635)
+node_a = NodePath("../RopeBody")
+node_b = NodePath("../RopeBody2")
+
+[node name="ConeTwistJoint3D4" type="ConeTwistJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00192094, 0.372965, -0.00441635)
+node_a = NodePath("../RopeBody2")
 node_b = NodePath("../DanglingBody")
