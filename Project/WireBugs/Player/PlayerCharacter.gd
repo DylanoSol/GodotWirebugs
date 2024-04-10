@@ -10,6 +10,9 @@ extends CharacterBody3D
 @onready var dangletestspawner = load("res://WireBugs/TestObjects/DanglingTest.tscn")
 var dangleHelper : Node3D = null; 
 
+var baseWireHangTimer : float = 4.
+var wireHangTimer : float = baseWireHangTimer
+
 var direction : Vector3 = Vector3(0, 0, 0)
 
 var isWireHanging : bool = false;
@@ -62,13 +65,19 @@ func handle_player_aim():
 	else: 
 		crosshairreference.visible = false; 
 
+func dangleHelper_delete(): 
+	# Clean up any remaining actors
+	if (dangleHelper != null): 
+		remove_child(dangleHelper)
+		dangleHelper.queue_free()
+		
+		wireHangTimer = baseWireHangTimer
+		
+		
 func wirehang_start(): 
 	
 	if Input.is_action_just_pressed("WireHang") && !is_on_floor(): 
-		# Clean up any remaining actors
-		if (dangleHelper != null): 
-			remove_child(dangleHelper)
-			dangleHelper.queue_free()
+		dangleHelper_delete()
 	
 		# Spawn test actor that dangles around
 		dangleHelper = dangletestspawner.instantiate()
@@ -86,15 +95,31 @@ func wirehang_start():
 			
 		danglingBody.apply_central_impulse(velocity.normalized())
 		isWireHanging = true
+		wireHangTimer = baseWireHangTimer
 		
-func wirehang_update(): 
+func wirehang_update(delta): 
+	# Make sure the player follows the wirehang
 	if (isWireHanging && danglingBody != null): 
 		velocity = Vector3(0, 0, 0)
-		global_position = danglingBody.global_position - Vector3(0, 1, 0)
+		global_position = danglingBody.global_position
 		
+		# Jump off
 		if (Input.is_action_just_pressed("ui_accept")): 
 			velocity = direction * 4 + Vector3(0, JUMP_VELOCITY * 0.2, 0)
+			dangleHelper_delete()
 			isWireHanging = false
+		
+		# Wirehang natural timer 
+		wireHangTimer -= delta
+		if (wireHangTimer <= 0): 
+			dangleHelper_delete()
+			isWireHanging = false
+			
+		if (is_on_floor()):
+			dangleHelper_delete()
+			isWireHanging = false
+			
+		
 		
 func wirebug_launch():
 	if Input.is_action_just_pressed("LaunchWirebug") && IsAiming:
@@ -141,7 +166,7 @@ func _physics_process(delta):
 		
 	# Wirehang
 	wirehang_start() 
-	wirehang_update()
+	wirehang_update(delta)
 		
 	move_and_slide()
 
